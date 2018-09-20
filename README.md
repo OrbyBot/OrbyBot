@@ -4,7 +4,7 @@ A boilerplate for node apps
 
 ## Running Unit Test
 
-`npm run test`
+`yarn test`
 
 ## How babel is used
 
@@ -14,7 +14,7 @@ To make it work we must first transpile the code, that's what `npm run build` do
 
 ## Running Locally
 
-`npm run dev`
+`yarn dev`
 
 The above will transpile the code to the dist/ folder and run index.js from there.
 
