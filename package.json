@@ -10,21 +10,21 @@
   "scripts": {
     "heroku-postbuild": "npm run build",
     "build": "babel src/ --out-dir dist/ --ignore test.js",
-    "dev": "concurrently \"npm run build -- --watch\" \"nodemon dist/index.js\"",
+    "dev": "concurrently \"npm run build -- --watch\" \"nodemon -r dotenv/config dist/index.js\"",
     "flow": "flow",
     "eslint": "eslint src/**/*",
     "start": "node dist/index.js",
     "test": "jest",
     "prettify": "prettier --write ./src/**/*.js"
   },
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
     "@babel/cli": "^7.1.0",
     "@babel/core": "^7.1.0",
     "@babel/preset-env": "^7.1.0",
     "@babel/preset-flow": "^7.0.0",
     "concurrently": "^4.0.1",
+    "dotenv": "^6.0.0",
     "eslint": "^5.5.0",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-config-airbnb-base": "^13.1.0",

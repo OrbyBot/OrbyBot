@@ -1,1 +1,1 @@
-console.log('Hello world');
+console.log('Hello world', process.env.SOME_ENV_VAR);
