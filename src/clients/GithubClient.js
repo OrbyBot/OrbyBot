@@ -1,23 +1,28 @@
 const rp = require('request-promise');
 
 export default class gitHubClient {
-  constructor(url: 'https://api.github.com/graphql') {
-    this.url = url;
+  constructor(url) {
+    console.log('Constructor');
+    this.url = url || 'https://mapi.discoverbank.com/api/index.json';
+    console.log('URL: ', this.url);
   }
 
-  async query(query = {}) {
-    return rp
-      .post({
-        url: this.url,
-        cache: 'no-cache',
-        headers: {
-          Authorization: `bearer ${process.env.GITHUB_TOKEN}`,
-        },
-        body: {
-          query,
-        },
-      })
-      .promise();
+  query(query = {}) {
+    return rp.get({
+      uri: this.url,
+    });
+    // return rp
+    //   .get({
+    //     uri: this.url,
+    //     cache: 'no-cache',
+    //     // headers: {
+    //     //   Authorization: `bearer ${process.env.GITHUB_TOKEN}`,
+    //     // },
+    //     // body: {
+    //     //   query,
+    //     // },
+    //   })
+    //   .then(r => console.log(r));
   }
 
   mutation(mutation = {}) {

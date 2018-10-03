@@ -35,8 +35,8 @@ export class AdaptiveCardsBot {
     // See https://aka.ms/about-bot-activity-message to learn more about the message and other activity types.
     if (context.activity.type === 'message') {
       if (context.activity.text.toLowerCase() === 'whoami') {
-        const user = new GitUser().getUser();
-        await context.sendActivity({ text: `${user}` });
+        const user = await new GitUser().getUser();
+        await context.sendActivity({ text: `${JSON.parse(user).disabled[0]}` });
       }
 
       const randomlySelectedCard =
