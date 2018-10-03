@@ -1,21 +1,23 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+import dialog1, { DIALOG_ONE } from './dialogs/dialog1';
+
 const { ActivityTypes } = require('botbuilder');
-const { DialogSet, DialogTurnStatus } = require('botbuilder-dialogs');
+const {
+  TextPrompt,
+  DialogSet,
+  DialogTurnStatus,
+} = require('botbuilder-dialogs');
 
 // const { GreetingState } = require('./dialogs/greeting/greetingState');
-const { GreetingDialog } = require('./dialogs/greeting');
-
-// Greeting Dialog ID
-const GREETING_DIALOG = 'greetingDialog';
+// const { GreetingDialog } = require('./dialogs/greeting');
 
 // State Accessor Properties
 const DIALOG_STATE_PROPERTY = 'dialogState';
 const GREETING_STATE_PROPERTY = 'greetingState';
 
 // Supported utterances
-const GREETING_UTTERANCE = 'hello';
 const CANCEL_UTTERANCE = 'cancel';
 const HELP_UTTERANCE = 'help';
 
@@ -28,7 +30,7 @@ const HELP_UTTERANCE = 'help';
  *  Store conversation and user state
  *  Handle conversation interruptions
  */
-export class OrbyBot {
+export default class OrbyBot {
   /**
    * Creates a OrbyBot.
    *
@@ -48,16 +50,12 @@ export class OrbyBot {
     );
     this.dialogState = conversationState.createProperty(DIALOG_STATE_PROPERTY);
 
+    const prompt = 'textPrompt';
     console.log('creating dialogtset');
     // Create top-level dialog(s)
     this.dialogs = new DialogSet(this.dialogState);
-    this.dialogs.add(
-      new GreetingDialog(
-        GREETING_DIALOG,
-        this.greetingStateAccessor,
-        userState,
-      ),
-    );
+    this.dialogs.add(new TextPrompt(prompt));
+    this.dialogs.add(dialog1(prompt));
 
     this.conversationState = conversationState;
     this.userState = userState;
@@ -92,8 +90,8 @@ export class OrbyBot {
         // Examine results from active dialog
         switch (dialogResult.status) {
           case DialogTurnStatus.empty:
-            if (utterance === GREETING_UTTERANCE) {
-              await dc.beginDialog(GREETING_DIALOG);
+            if (utterance === DIALOG_ONE) {
+              await dc.beginDialog(DIALOG_ONE);
             } else {
               // Help or no intent identified, either way, let's provide some help
               // to the user

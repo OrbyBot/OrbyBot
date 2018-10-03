@@ -3,12 +3,17 @@
 
 // See https://babeljs.io/docs/en/babel-polyfill for detail
 import '@babel/polyfill';
+import OrbyBot from './bot';
 
 const path = require('path');
 const restify = require('restify');
-const { BotFrameworkAdapter, ConversationState, MemoryStorage, UserState } = require('botbuilder');
+const {
+  BotFrameworkAdapter,
+  ConversationState,
+  MemoryStorage,
+  UserState,
+} = require('botbuilder');
 const { BotConfiguration } = require('botframework-config');
-const { OrbyBot } = require('./bot');
 
 const DEV_ENVIRONMENT = 'development';
 
@@ -79,10 +84,10 @@ const userState = new UserState(memoryStorage);
 // Create the main dialog.
 let bot;
 try {
-    bot = new OrbyBot(conversationState, userState, botConfig);
+  bot = new OrbyBot(conversationState, userState, botConfig);
 } catch (err) {
-    console.error(`[botInitializationError]: ${ err }`);
-    process.exit();
+  console.error(`[botInitializationError]: ${err}`);
+  process.exit();
 }
 
 // Listen for incoming requests.
