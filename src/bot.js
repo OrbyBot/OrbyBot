@@ -1,47 +1,161 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-const { CardFactory } = require('botbuilder');
+import dialog1, { DIALOG_ONE } from './dialogs/dialog1';
 
-// Import AdaptiveCard content.
-const FlightItineraryCard = require('../resources/FlightItineraryCard.json');
-const ImageGalleryCard = require('../resources/ImageGalleryCard.json');
-const LargeWeatherCard = require('../resources/LargeWeatherCard.json');
-const RestaurantCard = require('../resources/RestaurantCard.json');
-const SolitaireCard = require('../resources/SolitaireCard.json');
+const { ActivityTypes } = require('botbuilder');
+const {
+  TextPrompt,
+  DialogSet,
+  DialogTurnStatus,
+} = require('botbuilder-dialogs');
 
-// Create array of AdaptiveCard content, this will be used to send a random card to the user.
-const CARDS = [
-  FlightItineraryCard,
-  ImageGalleryCard,
-  LargeWeatherCard,
-  RestaurantCard,
-  SolitaireCard,
-];
+// const { GreetingState } = require('./dialogs/greeting/greetingState');
+// const { GreetingDialog } = require('./dialogs/greeting');
+
+// State Accessor Properties
+const DIALOG_STATE_PROPERTY = 'dialogState';
+const GREETING_STATE_PROPERTY = 'greetingState';
+
+// Supported utterances
+const CANCEL_UTTERANCE = 'cancel';
+const HELP_UTTERANCE = 'help';
 
 /**
- * A bot that sends AdaptiveCards to the user when it receives a message.
+ * Demonstrates the following concepts:
+ *  Displaying a Welcome Card, using Adaptive Card technology
+ *  Use LUIS to model Greetings, Help, and Cancel interations
+ *  Use a Waterflow dialog to model multi-turn conversation flow
+ *  Use custom prompts to validate user input
+ *  Store conversation and user state
+ *  Handle conversation interruptions
  */
-export class AdaptiveCardsBot {
+export default class OrbyBot {
   /**
-   * Every conversation turn for our AdaptiveCardsBot will call this method.
-   * There are no dialogs used, since it's "single turn" processing, meaning a single
-   * request and response, with no stateful conversation.
-   * @param turnContext A TurnContext instance containing all the data needed for processing this conversation turn.
+   * Creates a OrbyBot.
+   *
+   * @param {ConversationState} conversationState property accessor
+   * @param {UserState} userState property accessor
+   * @param {BotConfiguration} botConfig contents of the .bot file
+   */
+  constructor(conversationState, userState, botConfig) {
+    if (!conversationState)
+      throw 'Missing parameter.  conversationState is required';
+    if (!userState) throw 'Missing parameter.  userState is required';
+    if (!botConfig) throw 'Missing parameter.  botConfig is required';
+
+    // Create the property accessors for user and conversation state
+    this.greetingStateAccessor = userState.createProperty(
+      GREETING_STATE_PROPERTY,
+    );
+    this.dialogState = conversationState.createProperty(DIALOG_STATE_PROPERTY);
+
+    const prompt = 'textPrompt';
+    console.log('creating dialogtset');
+    // Create top-level dialog(s)
+    this.dialogs = new DialogSet(this.dialogState);
+    this.dialogs.add(new TextPrompt(prompt));
+    this.dialogs.add(dialog1(prompt));
+
+    this.conversationState = conversationState;
+    this.userState = userState;
+  }
+
+  /**
+   * Driver code that does one of the following:
+   * 1. Display a welcome message upon startup
+   * 2. Start a greeting dialog
+   * 3. Optionally handle Cancel or Help interruptions
+   *
+   * @param {Context} context turn context from the adapter
    */
   async onTurn(context) {
-    // See https://aka.ms/about-bot-activity-message to learn more about the message and other activity types.
-    if (context.activity.type === 'message') {
-      const randomlySelectedCard =
-        CARDS[Math.floor(Math.random() * CARDS.length - 1 + 1)];
-      await context.sendActivity({
-        text: 'Here is an Adaptive Card:',
-        attachments: [CardFactory.adaptiveCard(randomlySelectedCard)],
-      });
-    } else {
-      await context.sendActivity(`[${context.activity.type} event detected]`);
+    // Create a dialog context
+    const dc = await this.dialogs.createContext(context);
+
+    if (context.activity.type === ActivityTypes.Message) {
+      const utterance = context.activity.text.trim().toLowerCase();
+
+      // handle conversation interrupts first
+      const interrupted = await this.isTurnInterrupted(dc, utterance);
+      if (interrupted) {
+        return;
+      }
+
+      // Continue the current dialog
+      const dialogResult = await dc.continueDialog();
+
+      // If no one has responded,
+      if (!dc.context.responded) {
+        // Examine results from active dialog
+        switch (dialogResult.status) {
+          case DialogTurnStatus.empty:
+            if (utterance === DIALOG_ONE) {
+              await dc.beginDialog(DIALOG_ONE);
+            } else {
+              // Help or no intent identified, either way, let's provide some help
+              // to the user
+              await dc.context.sendActivity(
+                `I didn't understand what you just said to me. Try saying 'hello', 'help' or 'cancel'.`,
+              );
+            }
+            break;
+          case DialogTurnStatus.waiting:
+            // The active dialog is waiting for a response from the user, so do nothing
+            break;
+          case DialogTurnStatus.complete:
+            await dc.endDialog();
+            break;
+          default:
+            await dc.cancelAllDialogs();
+            break;
+        }
+      }
+    } else if (
+      context.activity.type === 'conversationUpdate' &&
+      context.activity.membersAdded[0].name === 'Bot'
+    ) {
+      // When activity type is "conversationUpdate" and the member joining the conversation is the bot
+      // we will send a welcome message.
+      await dc.context.sendActivity(
+        `Welcome to the message routing bot! Try saying 'hello' to start talking, and use 'help' or 'cancel' at anytime to try interruption and cancellation.`,
+      );
     }
+    // Make sure to persist state at the end of a turn.
+    await this.userState.saveChanges(context);
+    await this.conversationState.saveChanges(context);
+  }
+
+  /**
+   * Determine whether a turn is interrupted and handle interruption based off user's utterance.
+   *
+   * @param {DialogContext} dc - dialog context
+   * @param {string} utterance - user's utterance
+   */
+  async isTurnInterrupted(dc, utterance) {
+    // see if there are any conversation interrupts we need to handle
+    if (utterance === CANCEL_UTTERANCE) {
+      if (dc.activeDialog) {
+        await dc.cancelAllDialogs();
+        await dc.context.sendActivity(`Ok. I've cancelled our last activity.`);
+      } else {
+        await dc.context.sendActivity(`I don't have anything to cancel.`);
+      }
+      return true; // handled the interrupt
+    }
+
+    if (utterance === HELP_UTTERANCE) {
+      await dc.context.sendActivity(`Let me try to provide some help.`);
+      await dc.context.sendActivity(
+        `I understand greetings, being asked for help, or being asked to cancel what I am doing.`,
+      );
+
+      if (dc.activeDialog) {
+        // We've shown help, reprompt again to continue where the dialog left over
+        dc.repromptDialog();
+      }
+      return true; // handled the interrupt
+    }
+    return false; // did not handle the interrupt
   }
 }
-
-// exports.AdaptiveCardsBot = AdaptiveCardsBot;
