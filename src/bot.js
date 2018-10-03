@@ -1,6 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+import GitUser from './clients/GitUser';
+
 const { CardFactory } = require('botbuilder');
 
 // Import AdaptiveCard content.
@@ -32,6 +34,11 @@ export class AdaptiveCardsBot {
   async onTurn(context) {
     // See https://aka.ms/about-bot-activity-message to learn more about the message and other activity types.
     if (context.activity.type === 'message') {
+      if (context.activity.text.toLowerCase() === 'whoami') {
+        const user = new GitUser().getUser();
+        await context.sendActivity({ text: `${user}` });
+      }
+
       const randomlySelectedCard =
         CARDS[Math.floor(Math.random() * CARDS.length - 1 + 1)];
       await context.sendActivity({
