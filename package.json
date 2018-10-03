@@ -20,8 +20,13 @@
     "prettify": "prettier --write ./src/**/*.js"
   },
   "dependencies": {
+    "@babel/polyfill": "^7.0.0",
     "body-parser": "^1.18.3",
-    "express": "^4.16.3"
+    "botbuilder": "^4.0.6",
+    "botbuilder-teams": "^0.2.2",
+    "botframework-config": "^4.0.6",
+    "express": "^4.16.3",
+    "restify": "^7.2.1"
   },
   "resolutions": {
     "babel-core": "7.0.0-bridge.0"
