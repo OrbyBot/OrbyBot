@@ -1,5 +1,6 @@
 {
     "name": "orby-bot",
+    "description": "",
     "services": [
         {
             "type": "endpoint",
@@ -8,8 +9,16 @@
             "appId": "",
             "appPassword": "",
             "id": "198"
+        },
+        {
+            "type": "endpoint",
+            "name": "production",
+            "endpoint": "https://orby-bot.herokuapp.com/api/messages",
+            "appId": "8961d70e-7715-4cbd-baee-9da9b5a4d4c2",
+            "appPassword": "cCv/6viiMnmhQ/ipps9aGg==!GuevQip54/eCGPU7RNG9sBRIdA2xNbGA4JWWKevUv7c=",
+            "id": "199"
         }
     ],
-    "padlock": "",
+    "padlock": "T8zDGzseI8l4JwUfpAu/Pw==!1QjAIPOAI776uO1uT4A+1y9xceWvf36g59pCoApXmkx9iBU+x+hh5xd7mdmPaJKR",
     "version": "2.0"
 }
