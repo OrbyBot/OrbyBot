@@ -7,12 +7,7 @@ import OrbyBot from './bot';
 
 const path = require('path');
 const restify = require('restify');
-const {
-  BotFrameworkAdapter,
-  ConversationState,
-  MemoryStorage,
-  UserState,
-} = require('botbuilder');
+const { BotFrameworkAdapter } = require('botbuilder');
 const { BotConfiguration } = require('botframework-config');
 
 const DEV_ENVIRONMENT = 'development';
@@ -53,38 +48,36 @@ try {
 // Get bot endpoint configuration by service name.
 const endpointConfig = botConfig.findServiceByNameOrId(BOT_CONFIGURATION);
 
+// Language Understanding (LUIS) service name as defined in the .bot file.
+const LUIS_CONFIGURATION = 'luisModel';
+
+// Get endpoint and LUIS configurations by service name.
+const luisConfig = botConfig.findServiceByNameOrId(LUIS_CONFIGURATION);
+
+// Map the contents to the required format for `LuisRecognizer`.
+const luisApplication = {
+  applicationId: luisConfig.appId,
+  endpointKey: luisConfig.authoringKey,
+  azureRegion: luisConfig.region,
+};
+
+// Create configuration for LuisRecognizer's runtime behavior.
+const luisPredictionOptions = {
+  includeAllIntents: true,
+  log: true,
+  staging: false,
+};
+
 // Create adapter. See https://aka.ms/about-bot-adapter to learn more about adapters.
 const adapter = new BotFrameworkAdapter({
   appId: endpointConfig.appId || process.env.MicrosoftAppID,
   appPassword: endpointConfig.appPassword || process.env.MicrosoftAppPassword,
 });
 
-// Define the state store for your bot. See https://aka.ms/about-bot-state to learn more about using MemoryStorage.
-// A bot requires a state storage system to persist the dialog and user state between messages.
-const memoryStorage = new MemoryStorage();
-
-// CAUTION: You must ensure your product environment has the NODE_ENV set
-//          to use the Azure Blob storage or Azure Cosmos DB providers.
-// const { BlobStorage } = require('botbuilder-azure');
-// Storage configuration name or ID from .bot file
-// const STORAGE_CONFIGURATION_ID = '<STORAGE-NAME-OR-ID-FROM-BOT-FILE>';
-// // Default container name
-// const DEFAULT_BOT_CONTAINER = '<DEFAULT-CONTAINER>';
-// // Get service configuration
-// const blobStorageConfig = botConfig.findServiceByNameOrId(STORAGE_CONFIGURATION_ID);
-// const blobStorage = new BlobStorage({
-//     containerName: (blobStorageConfig.container || DEFAULT_BOT_CONTAINER),
-//     storageAccountOrConnectionString: blobStorageConfig.connectionString,
-// });
-
-// Create conversation state with in-memory storage provider.
-const conversationState = new ConversationState(memoryStorage);
-const userState = new UserState(memoryStorage);
-
-// Create the main dialog.
+// Create the bot.
 let bot;
 try {
-  bot = new OrbyBot(conversationState, userState, botConfig);
+  bot = new OrbyBot(luisApplication, luisPredictionOptions);
 } catch (err) {
   console.error(`[botInitializationError]: ${err}`);
   process.exit();

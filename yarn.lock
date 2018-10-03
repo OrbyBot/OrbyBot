@@ -561,65 +561,39 @@
     lodash "^4.17.10"
     to-fast-properties "^2.0.0"
 
-"@microsoft/recognizers-text-choice@1.0.1", "@microsoft/recognizers-text-choice@~1.0.1":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@microsoft/recognizers-text-choice/-/recognizers-text-choice-1.0.1.tgz#15b370aa4a3a948a4fd86593238f01f8726f0165"
+"@microsoft/recognizers-text-date-time@^1.0.0":
+  version "1.1.3"
+  resolved "https://registry.yarnpkg.com/@microsoft/recognizers-text-date-time/-/recognizers-text-date-time-1.1.3.tgz#eeb5e4b33d4675429e7ef175c52bb90a06c9c10e"
   dependencies:
-    "@microsoft/recognizers-text" "~1.0.1"
-    grapheme-splitter "^1.0.2"
-
-"@microsoft/recognizers-text-date-time@1.0.1", "@microsoft/recognizers-text-date-time@~1.0.1":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@microsoft/recognizers-text-date-time/-/recognizers-text-date-time-1.0.1.tgz#39417c88894d17941cec4cf043d12e52c928fe78"
-  dependencies:
-    "@microsoft/recognizers-text" "~1.0.1"
-    "@microsoft/recognizers-text-number" "~1.0.1"
-    "@microsoft/recognizers-text-number-with-unit" "~1.0.1"
+    "@microsoft/recognizers-text" "~1.1.3"
+    "@microsoft/recognizers-text-number" "~1.1.3"
+    "@microsoft/recognizers-text-number-with-unit" "~1.1.3"
     lodash.isequal "^4.5.0"
     lodash.tonumber "^4.0.3"
 
-"@microsoft/recognizers-text-number-with-unit@~1.0.1":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@microsoft/recognizers-text-number-with-unit/-/recognizers-text-number-with-unit-1.0.1.tgz#c8b502344eb8741b05d9ae628d3e4606fbb6d1e1"
+"@microsoft/recognizers-text-number-with-unit@~1.1.3":
+  version "1.1.3"
+  resolved "https://registry.yarnpkg.com/@microsoft/recognizers-text-number-with-unit/-/recognizers-text-number-with-unit-1.1.3.tgz#94030168babfd44450e30a3c6e540946653d9e3f"
   dependencies:
-    "@microsoft/recognizers-text" "~1.0.1"
-    "@microsoft/recognizers-text-number" "~1.0.1"
+    "@microsoft/recognizers-text" "~1.1.3"
+    "@microsoft/recognizers-text-number" "~1.1.3"
     lodash.escaperegexp "^4.1.2"
     lodash.last "^3.0.0"
     lodash.max "^4.0.1"
 
-"@microsoft/recognizers-text-number@1.0.1", "@microsoft/recognizers-text-number@~1.0.1":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@microsoft/recognizers-text-number/-/recognizers-text-number-1.0.1.tgz#abcc9685908154e5bb95c64083386e7ee91592f6"
+"@microsoft/recognizers-text-number@~1.1.3":
+  version "1.1.3"
+  resolved "https://registry.yarnpkg.com/@microsoft/recognizers-text-number/-/recognizers-text-number-1.1.3.tgz#3db1018b8031a2d4df3769e47abbd11ad1919535"
   dependencies:
-    "@microsoft/recognizers-text" "~1.0.1"
-    bignumber.js "^4.1.0"
+    "@microsoft/recognizers-text" "~1.1.3"
+    bignumber.js "^7.2.1"
     lodash.escaperegexp "^4.1.2"
     lodash.sortby "^4.7.0"
     lodash.trimend "^4.5.1"
-    xregexp "^3.2.0"
 
-"@microsoft/recognizers-text-sequence@~1.0.1":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@microsoft/recognizers-text-sequence/-/recognizers-text-sequence-1.0.1.tgz#949d4cca9cd37a70f65e50187cc6ebd8bd120516"
-  dependencies:
-    "@microsoft/recognizers-text" "~1.0.1"
-    grapheme-splitter "^1.0.2"
-
-"@microsoft/recognizers-text-suite@1.0.1":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@microsoft/recognizers-text-suite/-/recognizers-text-suite-1.0.1.tgz#0da13f6ab4ef13fb1bbefefa9acef6011dbbddc1"
-  dependencies:
-    "@microsoft/recognizers-text" "~1.0.1"
-    "@microsoft/recognizers-text-choice" "~1.0.1"
-    "@microsoft/recognizers-text-date-time" "~1.0.1"
-    "@microsoft/recognizers-text-number" "~1.0.1"
-    "@microsoft/recognizers-text-number-with-unit" "~1.0.1"
-    "@microsoft/recognizers-text-sequence" "~1.0.1"
-
-"@microsoft/recognizers-text@~1.0.1":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@microsoft/recognizers-text/-/recognizers-text-1.0.1.tgz#46609872aee7ded652ddb9dece89eb64d2a3b04d"
+"@microsoft/recognizers-text@~1.1.3":
+  version "1.1.3"
+  resolved "https://registry.yarnpkg.com/@microsoft/recognizers-text/-/recognizers-text-1.1.3.tgz#4bd020b3f9d1e5e841b78fedb45645a7918c2adb"
 
 "@types/async@^2.0.48":
   version "2.0.49"
@@ -672,6 +646,10 @@
   dependencies:
     "@types/node" "*"
 
+"@types/html-entities@^1.2.16":
+  version "1.2.16"
+  resolved "https://registry.yarnpkg.com/@types/html-entities/-/html-entities-1.2.16.tgz#4d1fe208c4c33727ac4657e6f5d92bfe52427023"
+
 "@types/is-stream@^1.1.0":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@types/is-stream/-/is-stream-1.1.0.tgz#b84d7bb207a210f2af9bed431dc0fbe9c4143be1"
@@ -716,7 +694,13 @@
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/@types/range-parser/-/range-parser-1.2.2.tgz#fa8e1ad1d474688a757140c91de6dace6f4abc8d"
 
-"@types/request@^2.47.0":
+"@types/request-promise-native@^1.0.10":
+  version "1.0.15"
+  resolved "https://registry.yarnpkg.com/@types/request-promise-native/-/request-promise-native-1.0.15.tgz#5b3369fc6aaf9e7fef7b6b688aef4c5759623e16"
+  dependencies:
+    "@types/request" "*"
+
+"@types/request@*", "@types/request@^2.47.0":
   version "2.47.1"
   resolved "https://registry.yarnpkg.com/@types/request/-/request-2.47.1.tgz#25410d3afbdac04c91a94ad9efc9824100735824"
   dependencies:
@@ -749,6 +733,10 @@
   resolved "https://registry.yarnpkg.com/@types/uuid/-/uuid-3.4.4.tgz#7af69360fa65ef0decb41fd150bf4ca5c0cefdf5"
   dependencies:
     "@types/node" "*"
+
+"@types/xmldom@^0.1.29":
+  version "0.1.29"
+  resolved "https://registry.yarnpkg.com/@types/xmldom/-/xmldom-0.1.29.tgz#c4428b0ca86d3b881475726fd94980b38a27c381"
 
 abab@^2.0.0:
   version "2.0.0"
@@ -1181,9 +1169,9 @@ bcrypt-pbkdf@^1.0.0:
   dependencies:
     tweetnacl "^0.14.3"
 
-bignumber.js@^4.1.0:
-  version "4.1.0"
-  resolved "https://registry.yarnpkg.com/bignumber.js/-/bignumber.js-4.1.0.tgz#db6f14067c140bd46624815a7916c92d9b6c24b1"
+bignumber.js@^7.2.1:
+  version "7.2.1"
+  resolved "https://registry.yarnpkg.com/bignumber.js/-/bignumber.js-7.2.1.tgz#80c048759d826800807c4bfd521e50edbba57a5f"
 
 binary-extensions@^1.0.0:
   version "1.12.0"
@@ -1243,23 +1231,49 @@ boom@5.x.x:
   dependencies:
     hoek "4.x.x"
 
+botbuilder-ai@4.0.0-preview1.2:
+  version "4.0.0-preview1.2"
+  resolved "https://registry.yarnpkg.com/botbuilder-ai/-/botbuilder-ai-4.0.0-preview1.2.tgz#43726704e09eecc495b6c531f132c713ddb64bae"
+  dependencies:
+    "@microsoft/recognizers-text-date-time" "^1.0.0"
+    "@types/html-entities" "^1.2.16"
+    "@types/node" "^9.3.0"
+    "@types/request-promise-native" "^1.0.10"
+    "@types/xmldom" "^0.1.29"
+    botbuilder "4.0.0-preview1.2"
+    botframework-luis "4.0.0-preview1.2"
+    html-entities "^1.2.1"
+    moment "^2.20.1"
+    mstranslator "^3.0.0"
+    request "2.83.0"
+    request-promise-native "1.0.5"
+    xmldom "^0.1.27"
+
+botbuilder-core-extensions@4.0.0-preview1.2:
+  version "4.0.0-preview1.2"
+  resolved "https://registry.yarnpkg.com/botbuilder-core-extensions/-/botbuilder-core-extensions-4.0.0-preview1.2.tgz#02b99c8d578e41eb56ba235df12f3a9f974bfd1e"
+  dependencies:
+    "@types/node" "^9.3.0"
+    assert "^1.4.1"
+    async-file "^2.0.2"
+    botbuilder-core "4.0.0-preview1.2"
+    filenamify "^2.0.0"
+    rimraf "^2.6.2"
+
+botbuilder-core@4.0.0-preview1.2:
+  version "4.0.0-preview1.2"
+  resolved "https://registry.yarnpkg.com/botbuilder-core/-/botbuilder-core-4.0.0-preview1.2.tgz#5323ec683b9f2c4a7154ec01ff1a9f24196a1036"
+  dependencies:
+    "@types/node" "^9.3.0"
+    assert "^1.4.1"
+    botframework-schema "4.0.0-preview1.2"
+
 botbuilder-core@^4.0.6:
   version "4.0.6"
   resolved "https://registry.yarnpkg.com/botbuilder-core/-/botbuilder-core-4.0.6.tgz#b038a2289f04ffef29bba615a077757b543c5996"
   dependencies:
     assert "^1.4.1"
     botframework-schema "^4.0.6"
-
-botbuilder-dialogs@^4.0.6:
-  version "4.0.6"
-  resolved "https://registry.yarnpkg.com/botbuilder-dialogs/-/botbuilder-dialogs-4.0.6.tgz#4ce08a9e74cb521c80546333a59a9f8165414c91"
-  dependencies:
-    "@microsoft/recognizers-text-choice" "1.0.1"
-    "@microsoft/recognizers-text-date-time" "1.0.1"
-    "@microsoft/recognizers-text-number" "1.0.1"
-    "@microsoft/recognizers-text-suite" "1.0.1"
-    "@types/node" "^9.3.0"
-    botbuilder-core "^4.0.6"
 
 botbuilder-teams@^0.2.2:
   version "0.2.2"
@@ -1269,6 +1283,19 @@ botbuilder-teams@^0.2.2:
     crypto "^1.0.1"
     ms-rest "^1.15.7"
     sprintf-js "^1.1.1"
+
+botbuilder@4.0.0-preview1.2:
+  version "4.0.0-preview1.2"
+  resolved "https://registry.yarnpkg.com/botbuilder/-/botbuilder-4.0.0-preview1.2.tgz#94ae962b724454fdf4bb2aee2b93e813a03c9633"
+  dependencies:
+    "@types/filenamify" "^2.0.1"
+    "@types/node" "^9.3.0"
+    async-file "^2.0.2"
+    botbuilder-core "4.0.0-preview1.2"
+    botbuilder-core-extensions "4.0.0-preview1.2"
+    botframework-connector "4.0.0-preview1.2"
+    filenamify "^2.0.0"
+    readline "^1.3.0"
 
 botbuilder@^3.11.0:
   version "3.15.0"
@@ -1292,7 +1319,7 @@ botbuilder@^3.11.0:
     sprintf-js "^1.0.3"
     url-join "^1.1.0"
 
-botbuilder@^4.0.6:
+botbuilder@^4.0.0-preview1.2:
   version "4.0.6"
   resolved "https://registry.yarnpkg.com/botbuilder/-/botbuilder-4.0.6.tgz#c71b23492a6b031a979d24a9d6d750b67db4018d"
   dependencies:
@@ -1314,6 +1341,20 @@ botframework-config@^4.0.6:
     url "^0.11.0"
     uuid "^3.3.2"
 
+botframework-connector@4.0.0-preview1.2:
+  version "4.0.0-preview1.2"
+  resolved "https://registry.yarnpkg.com/botframework-connector/-/botframework-connector-4.0.0-preview1.2.tgz#983eb2227b41ccf7ab43e8998015a0fcb9b482ed"
+  dependencies:
+    "@types/jsonwebtoken" "7.2.5"
+    "@types/node" "^9.3.0"
+    "@types/request" "^2.47.0"
+    base64url "^2.0.0"
+    botframework-schema "4.0.0-preview1.2"
+    jsonwebtoken "8.0.1"
+    ms-rest-js "^0.2.5"
+    request "2.83.0"
+    rsa-pem-from-mod-exp "^0.8.4"
+
 botframework-connector@^4.0.6:
   version "4.0.6"
   resolved "https://registry.yarnpkg.com/botframework-connector/-/botframework-connector-4.0.6.tgz#bd0eb7c16a56731288ccc76e445823141615779c"
@@ -1328,6 +1369,19 @@ botframework-connector@^4.0.6:
     ms-rest-js "0.2.8"
     request "2.83.0"
     rsa-pem-from-mod-exp "^0.8.4"
+
+botframework-luis@4.0.0-preview1.2:
+  version "4.0.0-preview1.2"
+  resolved "https://registry.yarnpkg.com/botframework-luis/-/botframework-luis-4.0.0-preview1.2.tgz#2312441313e0bfe87370ebc610f41fdf98408a74"
+  dependencies:
+    "@types/node" "^9.3.0"
+    ms-rest "^2.2.2"
+
+botframework-schema@4.0.0-preview1.2:
+  version "4.0.0-preview1.2"
+  resolved "https://registry.yarnpkg.com/botframework-schema/-/botframework-schema-4.0.0-preview1.2.tgz#6a93c37db8d6245725a5bf8dbbaf9c049b37d369"
+  dependencies:
+    "@types/node" "^9.3.0"
 
 botframework-schema@^4.0.6:
   version "4.0.6"
@@ -2797,10 +2851,6 @@ graceful-fs@^4.1.11, graceful-fs@^4.1.2, graceful-fs@^4.1.6:
   version "4.1.11"
   resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.1.11.tgz#0e8bdfe4d1ddb8854d64e04ea7c00e2a026e5658"
 
-grapheme-splitter@^1.0.2:
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/grapheme-splitter/-/grapheme-splitter-1.0.4.tgz#9cf3a665c6247479896834af35cf1dbb4400767e"
-
 growly@^1.3.0:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/growly/-/growly-1.3.0.tgz#f10748cbe76af964b7c96c93c6bcc28af120c081"
@@ -2949,6 +2999,10 @@ html-encoding-sniffer@^1.0.2:
   resolved "https://registry.yarnpkg.com/html-encoding-sniffer/-/html-encoding-sniffer-1.0.2.tgz#e70d84b94da53aa375e11fe3a351be6642ca46f8"
   dependencies:
     whatwg-encoding "^1.0.1"
+
+html-entities@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/html-entities/-/html-entities-1.2.1.tgz#0df29351f0721163515dfb9e5543e5f6eed5162f"
 
 http-deceiver@^1.2.7:
   version "1.2.7"
@@ -4265,7 +4319,7 @@ mkdirp@^0.5.0, mkdirp@^0.5.1, mkdirp@~0.5.1:
   dependencies:
     minimist "0.0.8"
 
-moment@2.x.x, moment@^2.10.3, moment@^2.10.6, moment@^2.14.1, moment@^2.21.0, moment@^2.22.2:
+moment@2.x.x, moment@^2.10.3, moment@^2.10.6, moment@^2.14.1, moment@^2.20.1, moment@^2.21.0, moment@^2.22.2:
   version "2.22.2"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.22.2.tgz#3c257f9839fc0e93ff53149632239eb90783ff66"
 
@@ -4280,7 +4334,7 @@ ms-rest-azure@^2.5.0:
     request "^2.88.0"
     uuid "^3.2.1"
 
-ms-rest-js@0.2.8:
+ms-rest-js@0.2.8, ms-rest-js@^0.2.5:
   version "0.2.8"
   resolved "http://registry.npmjs.org/ms-rest-js/-/ms-rest-js-0.2.8.tgz#9a4e104327b13ed7f6a6e505ae2e16ad54c3d834"
   dependencies:
@@ -4309,7 +4363,7 @@ ms-rest@^1.15.7:
     tunnel "~0.0.2"
     uuid "^3.0.1"
 
-ms-rest@^2.3.2:
+ms-rest@^2.2.2, ms-rest@^2.3.2:
   version "2.3.7"
   resolved "https://registry.yarnpkg.com/ms-rest/-/ms-rest-2.3.7.tgz#8bfc82fb91807643fcaa487c5fc9698cd18a018c"
   dependencies:
@@ -4329,6 +4383,10 @@ ms@2.0.0:
 ms@^2.0.0, ms@^2.1.1:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/ms/-/ms-2.1.1.tgz#30a5864eb3ebb0a66f2ebe6d727af06a09d86e0a"
+
+mstranslator@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/mstranslator/-/mstranslator-3.0.0.tgz#6a770ea450ffb4c65f68d5e6aee051b82de05cf3"
 
 mute-stream@0.0.7:
   version "0.0.7"
@@ -5087,6 +5145,10 @@ readdirp@^2.0.0:
     micromatch "^3.1.10"
     readable-stream "^2.0.2"
 
+readline@^1.3.0:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/readline/-/readline-1.3.0.tgz#c580d77ef2cfc8752b132498060dc9793a7ac01c"
+
 realpath-native@^1.0.0:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/realpath-native/-/realpath-native-1.0.2.tgz#cd51ce089b513b45cf9b1516c82989b51ccc6560"
@@ -5188,7 +5250,7 @@ request-promise-core@1.1.1:
   dependencies:
     lodash "^4.13.1"
 
-request-promise-native@^1.0.5:
+request-promise-native@1.0.5, request-promise-native@^1.0.5:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/request-promise-native/-/request-promise-native-1.0.5.tgz#5281770f68e0c9719e5163fd3fab482215f4fda5"
   dependencies:
@@ -6330,7 +6392,7 @@ xml-name-validator@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/xml-name-validator/-/xml-name-validator-3.0.0.tgz#6ae73e06de4d8c6e47f9fb181f78d648ad457c6a"
 
-"xmldom@>= 0.1.x":
+"xmldom@>= 0.1.x", xmldom@^0.1.27:
   version "0.1.27"
   resolved "https://registry.yarnpkg.com/xmldom/-/xmldom-0.1.27.tgz#d501f97b3bdb403af8ef9ecc20573187aadac0e9"
 
@@ -6341,10 +6403,6 @@ xpath.js@~1.1.0:
 xregexp@4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/xregexp/-/xregexp-4.0.0.tgz#e698189de49dd2a18cc5687b05e17c8e43943020"
-
-xregexp@^3.2.0:
-  version "3.2.0"
-  resolved "https://registry.yarnpkg.com/xregexp/-/xregexp-3.2.0.tgz#cb3601987bfe2695b584000c18f1c4a8c322878e"
 
 xtend@^4.0.0, xtend@^4.0.1:
   version "4.0.1"
