@@ -1,5 +1,5 @@
 import { WaterfallDialog } from 'botbuilder-dialogs';
-import { getRequestedPullRequests } from '../clients/GithubClient';
+import { getAssignedIssues } from '../clients/GithubClient';
 import { getEntity } from '../entityUtils';
 
 export const INTENT = 'Get issues';
@@ -16,7 +16,7 @@ export function dialog(luisState) {
       return step.endDialog();
     }
 
-    const issues = await getRequestedPullRequests(user);
+    const issues = await getAssignedIssues(user);
     if (issues.length > 0) {
       let issueActivity = '';
       issues.forEach(issue => {
