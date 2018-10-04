@@ -11,32 +11,51 @@ export function dialog(prompt, luisState) {
   async function step1(step) {
     const result = await luisState.get(step.context, {});
 
-    const branch = getEntity(result, 'branch');
+    const branch = getEntity(result, ENTITY_BRANCH);
 
     step.context.sendActivity(`I see you want to push to ${branch}`);
     step.context.sendActivity(`Entities: ${JSON.stringify(result)}`);
-    step.next(2);
+    step.next();
   }
 
   async function branchStep(step) {
-    return step.prompt(prompt, 'What branch do you want to deploy?');
+    const result = await luisState.get(step.context, {});
+    const branch = getEntity(result, ENTITY_BRANCH);
+    if (branch === undefined) {
+      return step.prompt(prompt, 'What branch do you want to deploy?');
+    }
+    return step.next();
+  }
+
+  async function branchCapture(step) {
+    const result = step.result.value;
+    console.log(`answered ${result}`);
+    // TODO save this
+    return step.next();
   }
 
   async function destinationStep(step) {
-    return step.prompt(prompt, 'Where do you want to deploy?');
+    const result = await luisState.get(step.context, {});
+    const environment = getEntity(result, ENTITY_ENVIRONMENT);
+    if (environment === undefined) {
+      return step.prompt(prompt, 'Where do you want to deploy?');
+    }
+    return step.next(2);
   }
 
-  // async function step2(step) {
-  //   // access user input from previous step
-  //   step.values[BRANCH] = step.result;
-
-  //   // send a message to the user
-  //   await step.prompt(prompt, 'Where do you want to deploy?');
-  // }
+  async function destinationCapture(step) {
+    const result = step.result.value;
+    console.log(`answered ${result}`);
+    // TODO save this
+    return step.next();
+  }
 
   async function dialogCompleteStep(step) {
+    const result = await luisState.get(step.context, {});
+    const branch = getEntity(result, ENTITY_BRANCH);
+    const environment = getEntity(result, ENTITY_ENVIRONMENT);
     await step.context.sendActivity(
-      `Ok, I'll deploy the ${step.values[BRANCH]} branch to ${step.result}`,
+      `Ok, I'll deploy the ${branch} branch to ${environment}`,
     );
     return step.endDialog();
   }
@@ -52,7 +71,9 @@ export function dialog(prompt, luisState) {
   return new WaterfallDialog(INTENT, [
     step1,
     branchStep,
+    branchCapture,
     destinationStep,
+    destinationCapture,
     dialogCompleteStep,
   ]);
 }
