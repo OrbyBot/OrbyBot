@@ -11,7 +11,7 @@
 import { WaterfallDialog } from 'botbuilder-dialogs';
 import Timeout from 'await-timeout';
 
-export const INTENT = 'ALM';
+export const INTENT = 'Get Defects';
 
 function generateMockResponse() {
   const link = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ';
