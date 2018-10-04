@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 import * as githubIssuesDialog from './dialogs/githubIssuesDialog';
+import * as helpDialog from './dialogs/helpDialog';
 
 const { ActivityTypes } = require('botbuilder');
 
@@ -54,6 +55,7 @@ export default class OrbyBot {
     this.dialogs = new DialogSet(this.dialogState);
     this.dialogs.add(new TextPrompt(prompt));
     this.dialogs.add(githubIssuesDialog.dialog(prompt));
+    this.dialogs.add(helpDialog.dialog);
 
     this.conversationState = conversationState;
     this.userState = userState;
@@ -72,35 +74,41 @@ export default class OrbyBot {
     // By checking the incoming Activity type, the bot only calls LUIS in appropriate cases.
     if (turnContext.activity.type === ActivityTypes.Message) {
       // Perform a call to LUIS to retrieve results for the user's message.
-      const results = await this.luisRecognizer.recognize(turnContext);
-      // Since the LuisRecognizer was configured to include the raw results, get the `topScoringIntent` as specified by LUIS.
-      const topIntent = results.luisResult.topScoringIntent;
 
-      const dialogResult = await dc.continueDialog();
+      const isHelpMessage = turnContext.activity.text.toLowerCase() === 'help';
+      if (isHelpMessage) {
+        await dc.beginDialog(helpDialog.INTENT);
+      } else {
+        const results = await this.luisRecognizer.recognize(turnContext);
+        // Since the LuisRecognizer was configured to include the raw results, get the `topScoringIntent` as specified by LUIS.
+        const topIntent = results.luisResult.topScoringIntent;
 
-      console.log('Continue Dialog: ', dialogResult);
+        const dialogResult = await dc.continueDialog();
 
-      // If no one has responded,
-      if (!dc.context.responded) {
-        if (topIntent.score < 0.3) {
-          await noMatch(turnContext);
-        } else {
-          switch (topIntent.intent) {
-            case githubIssuesDialog.INTENT:
-              await dc.beginDialog(githubIssuesDialog.INTENT);
-              break;
-            case 'None': {
-              await noMatch(turnContext);
-              break;
-            }
-            default: {
-              console.log('Top intent: ', topIntent);
-              await turnContext.sendActivity(
-                `LUIS Top Scoring Intent: ${topIntent.intent}, Score: ${
-                  topIntent.score
-                }`,
-              );
-              break;
+        console.log('Continue Dialog: ', dialogResult);
+
+        // If no one has responded,
+        if (!dc.context.responded) {
+          if (topIntent.score < 0.3) {
+            await noMatch(turnContext);
+          } else {
+            switch (topIntent.intent) {
+              case githubIssuesDialog.INTENT:
+                await dc.beginDialog(githubIssuesDialog.INTENT);
+                break;
+              case 'None': {
+                await noMatch(turnContext);
+                break;
+              }
+              default: {
+                console.log('Top intent: ', topIntent);
+                await turnContext.sendActivity(
+                  `LUIS Top Scoring Intent: ${topIntent.intent}, Score: ${
+                    topIntent.score
+                  }`,
+                );
+                break;
+              }
             }
           }
         }
