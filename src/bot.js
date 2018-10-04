@@ -90,30 +90,18 @@ export default class OrbyBot {
     if (turnContext.activity.type === ActivityTypes.Message) {
       // Perform a call to LUIS to retrieve results for the user's message.
 
-      const isRally = turnContext.activity.text.toLowerCase() === 'rally';
-      const isALM = turnContext.activity.text.toLowerCase() === 'alm';
-      const isHelpMessage = turnContext.activity.text.toLowerCase() === 'help';
-      if (isALM) {
-        // TODO make me LUIS intent
-        await dc.beginDialog(hpALMDialog.INTENT);
-      } else if (isRally) {
-        // TODO make me LUIS intent
-        await dc.beginDialog(rallyDialog.INTENT);
-      } else if (isHelpMessage) {
-        // TODO make me LUIS intent
-        await dc.beginDialog(helpDialog.INTENT);
-      } else {
+      const dialogResult = await dc.continueDialog();
+
+      console.log('Continue Dialog: ', dialogResult);
+
+      if (dialogResult.status === 'empty') {
         const results = await this.luisRecognizer.recognize(turnContext);
         // Since the LuisRecognizer was configured to include the raw results, get the `topScoringIntent` as specified by LUIS.
         const topIntent = results.luisResult.topScoringIntent;
 
         console.log(results.luisResult.entities);
 
-        const dialogResult = await dc.continueDialog();
-
-        console.log('Continue Dialog: ', dialogResult);
         console.log(results.luisResult);
-
         this.luisState.set(turnContext, results.luisResult.entities);
 
         // If no one has responded,

@@ -6,10 +6,10 @@ export const INTENT = 'Help';
 const getChoices = () => {
   const cardOptions = [
     {
-      value: 'Get my PRs',
+      value: 'Get PRs for sdg9',
     },
     {
-      value: 'Show me my issues',
+      value: 'Show me my defects',
     },
     {
       value: 'Deploy content to PA',
