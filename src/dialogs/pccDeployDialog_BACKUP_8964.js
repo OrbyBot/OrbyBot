@@ -1,4 +1,17 @@
+<<<<<<< HEAD
 // import ServiceNow from '../clients/serviceNowClient';
+
+// @todo
+
+/**
+ * Possible intents
+ *
+ * Deploy files to PA
+ * Deploy PCC files to Prod
+ * Deploy PCC to MST0
+ * Upload files to PA
+ * Release PCC files
+ */
 
 // const data = {
 //   short_description: 'Deploy static content',
@@ -12,7 +25,7 @@
 // ServiceNow.createNewTask(data, 'change_request', res => {
 //   console.log(res);
 // });
-
+=======
 import { WaterfallDialog } from 'botbuilder-dialogs';
 import _ from 'lodash';
 
@@ -92,3 +105,4 @@ export function dialog(prompt, luisState) {
     dialogCompleteStep,
   ]);
 }
+>>>>>>> 7e65e238c9b1d69e19c2f9e6c669694159fc7f64

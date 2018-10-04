@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 import * as githubIssuesDialog from './dialogs/githubIssuesDialog';
+import * as contentDeployDialog from './dialogs/pccDeployDialog';
 import * as helpDialog from './dialogs/helpDialog';
 import * as hpALMDialog from './dialogs/hpALMDialog';
 import * as rallyDialog from './dialogs/rallyDialog';
@@ -14,6 +15,7 @@ const { ChoicePrompt, TextPrompt, DialogSet } = require('botbuilder-dialogs');
 
 // State Accessor Properties
 const DIALOG_STATE_PROPERTY = 'dialogState';
+const LUIS_STATE = 'luisState';
 
 async function noMatch(turnContext) {
   await turnContext.sendActivity(`No LUIS intents were found.
@@ -53,6 +55,8 @@ export default class OrbyBot {
     );
 
     this.dialogState = conversationState.createProperty(DIALOG_STATE_PROPERTY);
+    this.luisState = conversationState.createProperty(LUIS_STATE);
+
     const prompt = 'textPrompt';
 
     const cardPrompt = 'cardPrompt';
@@ -61,6 +65,7 @@ export default class OrbyBot {
     this.dialogs.add(choicePrompt);
     this.dialogs.add(new TextPrompt(prompt));
     this.dialogs.add(githubIssuesDialog.dialog(prompt));
+    this.dialogs.add(contentDeployDialog.dialog(prompt, this.luisState));
     this.dialogs.add(helpDialog.dialog(cardPrompt));
     this.dialogs.add(hpALMDialog.dialog(prompt));
     this.dialogs.add(rallyDialog.dialog());
@@ -100,9 +105,14 @@ export default class OrbyBot {
         // Since the LuisRecognizer was configured to include the raw results, get the `topScoringIntent` as specified by LUIS.
         const topIntent = results.luisResult.topScoringIntent;
 
+        console.log(results.luisResult.entities);
+
         const dialogResult = await dc.continueDialog();
 
         console.log('Continue Dialog: ', dialogResult);
+        console.log(results.luisResult);
+
+        this.luisState.set(turnContext, results.luisResult.entities);
 
         // If no one has responded,
         if (!dc.context.responded) {
@@ -113,6 +123,10 @@ export default class OrbyBot {
               case githubIssuesDialog.INTENT:
                 await dc.beginDialog(githubIssuesDialog.INTENT);
                 break;
+              case contentDeployDialog.INTENT: {
+                await dc.beginDialog(contentDeployDialog.INTENT);
+                break;
+              }
               case 'None': {
                 await noMatch(turnContext);
                 break;

@@ -1,18 +1,3 @@
-// import ServiceNow from '../clients/serviceNowClient';
-
-// const data = {
-//   short_description: 'Deploy static content',
-//   description: 'Deploy content from 19.2 to Prod',
-//   urgency: '1',
-//   priority: '3',
-//   assignment_group: 'Software',
-//   category: 'Software',
-// };
-
-// ServiceNow.createNewTask(data, 'change_request', res => {
-//   console.log(res);
-// });
-
 import { WaterfallDialog } from 'botbuilder-dialogs';
 import _ from 'lodash';
 
