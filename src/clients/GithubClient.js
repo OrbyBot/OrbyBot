@@ -20,8 +20,8 @@ async function _searchIssues(owner, type = 'issue', other = '') {
 
   const issues = [];
   result.data.items.forEach(issue => {
-    const { title, body } = issue;
-    issues.push({ title, body });
+    const { title, body: description, number, html_url: link } = issue;
+    issues.push({ title, description, number, link });
   });
 
   return issues;
