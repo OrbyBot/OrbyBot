@@ -54,10 +54,7 @@ export function dialog(prompt, luisState) {
     const environment = step.values[ENTITY_ENVIRONMENT];
     const branch = step.values[ENTITY_BRANCH];
 
-    if (
-      environment.toLowerCase() === 'production' ||
-      environment.toLowerCase() === 'prod'
-    ) {
+    if (environment && environment.indexOf('prod') > 1) {
       const number = await createNewTask(branch, environment);
 
       step.context.sendActivity(
