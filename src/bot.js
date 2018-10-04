@@ -8,7 +8,12 @@ const { ActivityTypes } = require('botbuilder');
 
 const { LuisRecognizer } = require('botbuilder-ai');
 
-const { TextPrompt, DialogSet } = require('botbuilder-dialogs');
+const {
+  ChoicePrompt,
+  TextPrompt,
+  DialogSet,
+  ListStyle,
+} = require('botbuilder-dialogs');
 
 // State Accessor Properties
 const DIALOG_STATE_PROPERTY = 'dialogState';
@@ -52,10 +57,14 @@ export default class OrbyBot {
 
     this.dialogState = conversationState.createProperty(DIALOG_STATE_PROPERTY);
     const prompt = 'textPrompt';
+
+    const cardPrompt = 'cardPrompt';
+    const choicePrompt = new ChoicePrompt(cardPrompt);
     this.dialogs = new DialogSet(this.dialogState);
+    this.dialogs.add(choicePrompt);
     this.dialogs.add(new TextPrompt(prompt));
     this.dialogs.add(githubIssuesDialog.dialog(prompt));
-    this.dialogs.add(helpDialog.dialog);
+    this.dialogs.add(helpDialog.dialog(cardPrompt));
 
     this.conversationState = conversationState;
     this.userState = userState;
