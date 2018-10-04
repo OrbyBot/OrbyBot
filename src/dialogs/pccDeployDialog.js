@@ -29,36 +29,37 @@ export function dialog(prompt, luisState) {
     if (branch === undefined) {
       return step.prompt(prompt, 'What branch do you want to deploy?');
     }
+
+    step.values[ENTITY_BRANCH] = branch;
     return step.next(2);
   }
 
   async function branchCapture(step) {
-    const result = step.result.value;
-    const state = await luisState.get(step.context, {});
-    luisState.set(updateState(state, result, ENTITY_BRANCH));
+    step.values[ENTITY_BRANCH] = step.result;
+    console.log(`set ${step.result}`);
     return step.next();
   }
 
-  async function destinationStep(step) {
+  async function environmentStep(step) {
     const state = await luisState.get(step.context, {});
     const environment = getEntity(state, ENTITY_ENVIRONMENT);
     if (environment === undefined) {
       return step.prompt(prompt, 'Where do you want to deploy?');
     }
+    step.values[ENTITY_ENVIRONMENT];
+
     return step.next(2);
   }
 
-  async function destinationCapture(step) {
-    const result = step.result.value;
-    const state = await luisState.get(step.context, {});
-    luisState.set(updateState(state, result, ENTITY_ENVIRONMENT));
+  async function environmentCapture(step) {
+    step.values[ENTITY_ENVIRONMENT] = step.result;
+    console.log(`set ${step.result}`);
     return step.next();
   }
 
   async function dialogCompleteStep(step) {
-    const state = await luisState.get(step.context, {});
-    const branch = getEntity(state, ENTITY_BRANCH);
-    const environment = getEntity(state, ENTITY_ENVIRONMENT);
+    const environment = step.values[ENTITY_ENVIRONMENT];
+    const branch = step.values[ENTITY_BRANCH];
     await step.context.sendActivity(
       `Ok, I'll deploy the ${branch} branch to ${environment}`,
     );
@@ -68,8 +69,8 @@ export function dialog(prompt, luisState) {
   return new WaterfallDialog(INTENT, [
     branchStep,
     branchCapture,
-    destinationStep,
-    destinationCapture,
+    environmentStep,
+    environmentCapture,
     dialogCompleteStep,
   ]);
 }
