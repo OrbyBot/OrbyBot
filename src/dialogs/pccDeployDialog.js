@@ -1,19 +1,6 @@
-// import ServiceNow from '../clients/serviceNowClient';
-
-// const data = {
-//   short_description: 'Deploy static content',
-//   description: 'Deploy content from 19.2 to Prod',
-//   urgency: '1',
-//   priority: '3',
-//   assignment_group: 'Software',
-//   category: 'Software',
-// };
-
-// ServiceNow.createNewTask(data, 'change_request', res => {
-//   console.log(res);
-// });
-
 import { WaterfallDialog } from 'botbuilder-dialogs';
+import ServiceNow from '../clients/serviceNowClient';
+
 import { getEntity } from '../entityUtils';
 
 export const INTENT = 'Content Deployment';
@@ -29,47 +16,76 @@ export function dialog(prompt, luisState) {
     if (branch === undefined) {
       return step.prompt(prompt, 'What branch do you want to deploy?');
     }
-    return step.next(2);
-  }
 
-  async function branchCapture(step) {
-    // const result = step.result.value;
-    // const state = await luisState.get(step.context, {});
-    // luisState.set(updateState(state, result, ENTITY_BRANCH));
+    console.log(`found luis entity: ${branch}`);
+    step.values[ENTITY_BRANCH] = branch;
     return step.next();
   }
 
-  async function destinationStep(step) {
+  async function branchCapture(step) {
+    if (step.values[ENTITY_BRANCH] === undefined) {
+      step.values[ENTITY_BRANCH] = step.result;
+      console.log(`seting branch to ${step.result}`);
+    }
+    return step.next();
+  }
+
+  async function environmentStep(step) {
     const state = await luisState.get(step.context, {});
     const environment = getEntity(state, ENTITY_ENVIRONMENT);
     if (environment === undefined) {
       return step.prompt(prompt, 'Where do you want to deploy?');
     }
-    return step.next(2);
+    console.log(`found luis entity: ${environment}`);
+    step.values[ENTITY_ENVIRONMENT] = environment;
+
+    return step.next();
   }
 
-  async function destinationCapture(step) {
-    // const result = step.result.value;
-    // const state = await luisState.get(step.context, {});
-    // luisState.set(updateState(state, result, ENTITY_ENVIRONMENT));
+  async function environmentCapture(step) {
+    if (step.values[ENTITY_ENVIRONMENT] === undefined) {
+      step.values[ENTITY_ENVIRONMENT] = step.result;
+      console.log(`seting environment to ${step.result}`);
+    }
     return step.next();
   }
 
   async function dialogCompleteStep(step) {
-    const state = await luisState.get(step.context, {});
-    const branch = getEntity(state, ENTITY_BRANCH);
-    const environment = getEntity(state, ENTITY_ENVIRONMENT);
-    await step.context.sendActivity(
-      `Ok, I'll deploy the ${branch} branch to ${environment}`,
+    const environment = step.values[ENTITY_ENVIRONMENT];
+    const branch = step.values[ENTITY_BRANCH];
+
+    const number = await createNewTask(branch, environment);
+
+    step.context.sendActivity(
+      `Ok, I've opened up a ticket ${number} to deploy the ${branch} branch to ${environment}`,
     );
+    // console.log(res)
+    // ;
     return step.endDialog();
+  }
+
+  async function createNewTask(branch, environment) {
+    const data = {
+      short_description: 'Deploy static content',
+      description: `Deploy the ${branch} to ${environment} environment`,
+      urgency: '1',
+      priority: '3',
+      assignment_group: 'Software',
+      category: 'Software',
+    };
+
+    return new Promise(resolve => {
+      ServiceNow.createNewTask(data, 'change_request', res => {
+        resolve(res.number);
+      });
+    });
   }
 
   return new WaterfallDialog(INTENT, [
     branchStep,
     branchCapture,
-    destinationStep,
-    destinationCapture,
+    environmentStep,
+    environmentCapture,
     dialogCompleteStep,
   ]);
 }
