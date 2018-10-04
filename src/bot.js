@@ -120,6 +120,15 @@ export default class OrbyBot {
             await noMatch(turnContext);
           } else {
             switch (topIntent.intent) {
+              case hpALMDialog.INTENT:
+                await dc.beginDialog(hpALMDialog.INTENT);
+                break;
+              case rallyDialog.INTENT:
+                await dc.beginDialog(rallyDialog.INTENT);
+                break;
+              case helpDialog.INTENT:
+                await dc.beginDialog(helpDialog.INTENT);
+                break;
               case githubIssuesDialog.INTENT:
                 await dc.beginDialog(githubIssuesDialog.INTENT);
                 break;

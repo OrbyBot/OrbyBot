@@ -11,7 +11,7 @@
 import { WaterfallDialog } from 'botbuilder-dialogs';
 import Timeout from 'await-timeout';
 
-export const INTENT = 'RALLY';
+export const INTENT = 'Get User Stories';
 
 function generateMockResponse() {
   const link = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ';

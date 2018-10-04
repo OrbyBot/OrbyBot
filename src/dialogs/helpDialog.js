@@ -1,7 +1,7 @@
 // @todo
 import { WaterfallDialog } from 'botbuilder-dialogs';
 
-export const INTENT = 'HELP';
+export const INTENT = 'Help';
 
 const getChoices = () => {
   const cardOptions = [
