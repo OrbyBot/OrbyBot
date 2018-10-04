@@ -1054,6 +1054,10 @@ atob@^2.1.1:
   version "2.1.2"
   resolved "https://botbuilder.myget.org/F/botbuilder-v4-js-daily/npm/atob/-/atob-2.1.2.tgz#6d9517eb9e030d2436666651e86bd9f6f13533c9"
 
+await-timeout@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/await-timeout/-/await-timeout-0.3.0.tgz#5351e5eed13bbee6cf9fd1a4327b9ff426667ba6"
+
 aws-sign2@~0.6.0:
   version "0.6.0"
   resolved "https://botbuilder.myget.org/F/botbuilder-v4-js-daily/npm/aws-sign2/-/aws-sign2-0.6.0.tgz#14342dd38dbcc94d0e5b87d763cd63612c0e794f"
