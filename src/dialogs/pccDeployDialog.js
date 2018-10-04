@@ -14,7 +14,7 @@
 // });
 
 import { WaterfallDialog } from 'botbuilder-dialogs';
-import { getEntity, updateState } from '../entityUtils';
+import { getEntity } from '../entityUtils';
 
 export const INTENT = 'Content Deployment';
 export const DEPLOY_DIALOG_STATE = 'deployDialogState';
@@ -60,6 +60,7 @@ export function dialog(prompt, luisState) {
   async function dialogCompleteStep(step) {
     const environment = step.values[ENTITY_ENVIRONMENT];
     const branch = step.values[ENTITY_BRANCH];
+
     await step.context.sendActivity(
       `Ok, I'll deploy the ${branch} branch to ${environment}`,
     );
