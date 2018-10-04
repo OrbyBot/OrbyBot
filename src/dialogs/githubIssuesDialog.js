@@ -1,47 +1,23 @@
+// @todo
 import { WaterfallDialog } from 'botbuilder-dialogs';
-import { getAssignedIssues } from '../clients/GithubClient';
-import { getEntity } from '../entityUtils';
 
 export const INTENT = 'Get issues';
-const ENTITY_USER = 'user';
 
-export function dialog(luisState) {
+export function dialog(prompt) {
   async function step1(step) {
-    const result = await luisState.get(step.context, {});
-    const user = getEntity(result, ENTITY_USER);
-
-    if (!user) {
-      // TODO probably should ask for the user here instead of failing
-      await step.context.sendActivity('No user was given. Please try again!');
-      return step.endDialog();
-    }
-
-    const issues = await getAssignedIssues(user);
-    console.log(issues);
-    if (issues.length > 0) {
-      let issueActivity = 'Title: Body\n---------------\n';
-      issues.forEach(issue => {
-        const title =
-          issue.title.length > 22
-            ? `${issue.title.substring(0, 22)}...`
-            : issue.title;
-
-        const description =
-          issue.description.length > 22
-            ? `${issue.description.substring(0, 22)}...`
-            : issue.description;
-
-        issueActivity += `([#${issue.number}](${
-          issue.link
-        }))${title}: ${description}\n`;
-      });
-      await step.context.sendActivity(issueActivity);
-    } else {
-      await step.context.sendActivity(`${user} has no assigned issues open!!`);
-    }
-
-    return step.endDialog();
+    return step.prompt(prompt, 'What is your name?');
   }
 
-  return new WaterfallDialog(INTENT, [step1]);
+  async function step2(step) {
+    // access user input from previous step
+    const lastStepAnswer = step.result;
+    console.log('Last answer: ', lastStepAnswer);
+
+    // send a message to the user
+    await step.context.sendActivity(`Thanks ${lastStepAnswer}`);
+
+    // OR end
+    return step.endDialog();
+  }
+  return new WaterfallDialog(INTENT, [step1, step2]);
 }
