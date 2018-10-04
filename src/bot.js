@@ -4,6 +4,8 @@
 import * as githubIssuesDialog from './dialogs/githubIssuesDialog';
 import * as contentDeployDialog from './dialogs/pccDeployDialog';
 import * as helpDialog from './dialogs/helpDialog';
+import * as hpALMDialog from './dialogs/hpALMDialog';
+import * as rallyDialog from './dialogs/rallyDialog';
 
 const { ActivityTypes } = require('botbuilder');
 
@@ -65,6 +67,8 @@ export default class OrbyBot {
     this.dialogs.add(githubIssuesDialog.dialog(prompt));
     this.dialogs.add(contentDeployDialog.dialog(prompt, this.luisState));
     this.dialogs.add(helpDialog.dialog(cardPrompt));
+    this.dialogs.add(hpALMDialog.dialog(prompt));
+    this.dialogs.add(rallyDialog.dialog());
 
     this.conversationState = conversationState;
     this.userState = userState;
@@ -84,8 +88,17 @@ export default class OrbyBot {
     if (turnContext.activity.type === ActivityTypes.Message) {
       // Perform a call to LUIS to retrieve results for the user's message.
 
+      const isRally = turnContext.activity.text.toLowerCase() === 'rally';
+      const isALM = turnContext.activity.text.toLowerCase() === 'alm';
       const isHelpMessage = turnContext.activity.text.toLowerCase() === 'help';
-      if (isHelpMessage) {
+      if (isALM) {
+        // TODO make me LUIS intent
+        await dc.beginDialog(hpALMDialog.INTENT);
+      } else if (isRally) {
+        // TODO make me LUIS intent
+        await dc.beginDialog(rallyDialog.INTENT);
+      } else if (isHelpMessage) {
+        // TODO make me LUIS intent
         await dc.beginDialog(helpDialog.INTENT);
       } else {
         const results = await this.luisRecognizer.recognize(turnContext);

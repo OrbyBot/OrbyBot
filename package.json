@@ -22,6 +22,7 @@
   "dependencies": {
     "@babel/polyfill": "^7.0.0",
     "@octokit/rest": "^15.12.1",
+    "await-timeout": "^0.3.0",
     "body-parser": "^1.18.3",
     "botbuilder": "^4.0.6",
     "botbuilder-ai": "^4.0.6",
