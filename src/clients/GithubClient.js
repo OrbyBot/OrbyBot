@@ -1,41 +1,45 @@
-const rp = require('request-promise');
+const octokit = require('@octokit/rest')();
+octokit.authenticate({
+  type: 'token',
+  token: process.env.GITHUB_TOKEN,
+});
 
-export default class gitHubClient {
-  constructor(url) {
-    console.log('Constructor');
-    this.url = url || 'https://mapi.discoverbank.com/api/index.json';
-    console.log('URL: ', this.url);
-  }
+async function getRepo(owner = 'OrbyBot', repo = 'OrbyBot') {
+  const response = await octokit.repos.get({
+    owner,
+    repo,
+  });
 
-  query(query = {}) {
-    return rp.get({
-      uri: this.url,
-    });
-    // return rp
-    //   .get({
-    //     uri: this.url,
-    //     cache: 'no-cache',
-    //     // headers: {
-    //     //   Authorization: `bearer ${process.env.GITHUB_TOKEN}`,
-    //     // },
-    //     // body: {
-    //     //   query,
-    //     // },
-    //   })
-    //   .then(r => console.log(r));
-  }
-
-  mutation(mutation = {}) {
-    // Default options are marked with *
-    return fetch(this.url, {
-      method: 'POST',
-      cache: 'no-cache',
-      headers: {
-        Authorization: `bearer ${process.env.GITHUB_TOKEN}`,
-      },
-      body: {
-        mutation,
-      },
-    }).then(response => response.json()); // parses response to JSON
-  }
+  return response.data.full_name;
 }
+
+async function _searchIssues(owner, type = 'issue', other = '') {
+  const user = owner ? `user:${owner}` : '';
+
+  const q = `type:${type} ${user} ${other}`;
+  const result = await octokit.search.issues({ q });
+
+  console.log(result.data);
+
+  return result.data.items;
+}
+
+async function getAssignedIssues(owner) {
+  return _searchIssues(owner, 'issue');
+}
+
+async function getAssignedPullRequests(owner) {
+  return _searchIssues(owner, 'pr');
+}
+
+async function getRequestedPullRequests(owner) {
+  // we call with no owner b/c we are reviewing someone elses PR
+  return _searchIssues('', 'pr', `review-requested:${owner}`);
+}
+
+module.exports = {
+  getRepo,
+  getAssignedIssues,
+  getAssignedPullRequests,
+  getRequestedPullRequests,
+};
