@@ -7,7 +7,12 @@ import OrbyBot from './bot';
 
 const path = require('path');
 const restify = require('restify');
-const { BotFrameworkAdapter } = require('botbuilder');
+const {
+  BotFrameworkAdapter,
+  ConversationState,
+  MemoryStorage,
+  UserState,
+} = require('botbuilder');
 const { BotConfiguration } = require('botframework-config');
 
 const DEV_ENVIRONMENT = 'development';
@@ -74,10 +79,23 @@ const adapter = new BotFrameworkAdapter({
   appPassword: endpointConfig.appPassword || process.env.MicrosoftAppPassword,
 });
 
+// Define the state store for your bot. See https://aka.ms/about-bot-state to learn more about using MemoryStorage.
+// A bot requires a state storage system to persist the dialog and user state between messages.
+const memoryStorage = new MemoryStorage();
+
+// Create conversation state with in-memory storage provider.
+const conversationState = new ConversationState(memoryStorage);
+const userState = new UserState(memoryStorage);
+
 // Create the bot.
 let bot;
 try {
-  bot = new OrbyBot(luisApplication, luisPredictionOptions);
+  bot = new OrbyBot(
+    conversationState,
+    userState,
+    luisApplication,
+    luisPredictionOptions,
+  );
 } catch (err) {
   console.error(`[botInitializationError]: ${err}`);
   process.exit();
