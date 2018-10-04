@@ -15,13 +15,16 @@ async function getRepo(owner = 'OrbyBot', repo = 'OrbyBot') {
 
 async function _searchIssues(owner, type = 'issue', other = '') {
   const user = owner ? `user:${owner}` : '';
-
   const q = `type:${type} ${user} ${other}`;
   const result = await octokit.search.issues({ q });
 
-  console.log(result.data);
+  const issues = [];
+  result.data.items.forEach(issue => {
+    const { title, body: description, number, html_url: link } = issue;
+    issues.push({ title, description, number, link });
+  });
 
-  return result.data.items;
+  return issues;
 }
 
 async function getAssignedIssues(owner) {
