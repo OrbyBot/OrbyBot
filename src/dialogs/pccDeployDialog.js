@@ -14,7 +14,7 @@
 // });
 
 import { WaterfallDialog } from 'botbuilder-dialogs';
-import { getEntity, updateState } from '../entityUtils';
+import { getEntity } from '../entityUtils';
 
 export const INTENT = 'Content Deployment';
 export const DEPLOY_DIALOG_STATE = 'deployDialogState';
@@ -33,9 +33,9 @@ export function dialog(prompt, luisState) {
   }
 
   async function branchCapture(step) {
-    const result = step.result.value;
-    const state = await luisState.get(step.context, {});
-    luisState.set(updateState(state, result, ENTITY_BRANCH));
+    // const result = step.result.value;
+    // const state = await luisState.get(step.context, {});
+    // luisState.set(updateState(state, result, ENTITY_BRANCH));
     return step.next();
   }
 
@@ -49,9 +49,9 @@ export function dialog(prompt, luisState) {
   }
 
   async function destinationCapture(step) {
-    const result = step.result.value;
-    const state = await luisState.get(step.context, {});
-    luisState.set(updateState(state, result, ENTITY_ENVIRONMENT));
+    // const result = step.result.value;
+    // const state = await luisState.get(step.context, {});
+    // luisState.set(updateState(state, result, ENTITY_ENVIRONMENT));
     return step.next();
   }
 
