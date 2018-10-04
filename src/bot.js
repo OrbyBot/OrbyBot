@@ -1,9 +1,24 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+import * as githubIssuesDialog from './dialogs/githubIssuesDialog';
+
 const { ActivityTypes } = require('botbuilder');
 
 const { LuisRecognizer } = require('botbuilder-ai');
+
+const { TextPrompt, DialogSet } = require('botbuilder-dialogs');
+
+// State Accessor Properties
+const DIALOG_STATE_PROPERTY = 'dialogState';
+
+async function noMatch(turnContext) {
+  await turnContext.sendActivity(`No LUIS intents were found.
+    \nThis sample is about identifying two user intents:
+    \n - 'Get issues'
+    \n - 'Get PRs'
+    \nTry typing 'Add Event' or 'Show me tomorrow'.`);
+}
 
 /**
  * Demonstrates the following concepts:
@@ -22,12 +37,26 @@ export default class OrbyBot {
    * @param {UserState} userState property accessor
    * @param {BotConfiguration} botConfig contents of the .bot file
    */
-  constructor(application, luisPredictionOptions) {
+  constructor(
+    conversationState,
+    userState,
+    application,
+    luisPredictionOptions,
+  ) {
     this.luisRecognizer = new LuisRecognizer(
       application,
       luisPredictionOptions,
       true,
     );
+
+    this.dialogState = conversationState.createProperty(DIALOG_STATE_PROPERTY);
+    const prompt = 'textPrompt';
+    this.dialogs = new DialogSet(this.dialogState);
+    this.dialogs.add(new TextPrompt(prompt));
+    this.dialogs.add(githubIssuesDialog.dialog(prompt));
+
+    this.conversationState = conversationState;
+    this.userState = userState;
   }
 
   /**
@@ -39,29 +68,42 @@ export default class OrbyBot {
    * @param {Context} context turn context from the adapter
    */
   async onTurn(turnContext) {
+    const dc = await this.dialogs.createContext(turnContext);
     // By checking the incoming Activity type, the bot only calls LUIS in appropriate cases.
     if (turnContext.activity.type === ActivityTypes.Message) {
-      console.log('what');
       // Perform a call to LUIS to retrieve results for the user's message.
       const results = await this.luisRecognizer.recognize(turnContext);
-      console.log('recognize ran');
       // Since the LuisRecognizer was configured to include the raw results, get the `topScoringIntent` as specified by LUIS.
       const topIntent = results.luisResult.topScoringIntent;
-      console.log('topIntent');
 
-      if (topIntent.intent !== 'None') {
-        await turnContext.sendActivity(
-          `LUIS Top Scoring Intent: ${topIntent.intent}, Score: ${
-            topIntent.score
-          }`,
-        );
-      } else {
-        // If the top scoring intent was "None" tell the user no valid intents were found and provide help.
-        await turnContext.sendActivity(`No LUIS intents were found.
-                                                \nThis sample is about identifying two user intents:
-                                                \n - 'Calendar.Add'
-                                                \n - 'Calendar.Find'
-                                                \nTry typing 'Add Event' or 'Show me tomorrow'.`);
+      const dialogResult = await dc.continueDialog();
+
+      console.log('Continue Dialog: ', dialogResult);
+
+      // If no one has responded,
+      if (!dc.context.responded) {
+        if (topIntent.score < 0.3) {
+          await noMatch(turnContext);
+        } else {
+          switch (topIntent.intent) {
+            case githubIssuesDialog.INTENT:
+              await dc.beginDialog(githubIssuesDialog.INTENT);
+              break;
+            case 'None': {
+              await noMatch(turnContext);
+              break;
+            }
+            default: {
+              console.log('Top intent: ', topIntent);
+              await turnContext.sendActivity(
+                `LUIS Top Scoring Intent: ${topIntent.intent}, Score: ${
+                  topIntent.score
+                }`,
+              );
+              break;
+            }
+          }
+        }
       }
     } else if (
       turnContext.activity.type === ActivityTypes.ConversationUpdate &&
@@ -78,5 +120,8 @@ export default class OrbyBot {
         `[${turnContext.activity.type}]-type activity detected.`,
       );
     }
+    // Make sure to persist state at the end of a turn.
+    await this.userState.saveChanges(turnContext);
+    await this.conversationState.saveChanges(turnContext);
   }
 }
