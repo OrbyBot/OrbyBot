@@ -23,6 +23,7 @@
     "@babel/polyfill": "^7.0.0",
     "body-parser": "^1.18.3",
     "botbuilder": "^4.0.6",
+    "botbuilder-ai": "^4.0.6",
     "botbuilder-dialogs": "^4.0.6",
     "botbuilder-teams": "^0.2.2",
     "botframework-config": "^4.0.6",
