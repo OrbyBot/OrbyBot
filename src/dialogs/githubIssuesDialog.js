@@ -17,9 +17,8 @@ export function dialog(luisState) {
     }
 
     const issues = await getAssignedIssues(user);
-    console.log(issues);
     if (issues.length > 0) {
-      let issueActivity = 'Title: Body\n---------------\n';
+      let issueActivity = '';
       issues.forEach(issue => {
         const title =
           issue.title.length > 22
@@ -37,7 +36,9 @@ export function dialog(luisState) {
       });
       await step.context.sendActivity(issueActivity);
     } else {
-      await step.context.sendActivity(`${user} has no assigned issues open!!`);
+      await step.context.sendActivity(
+        `${user} has no pull requests to review!!`,
+      );
     }
 
     return step.endDialog();
