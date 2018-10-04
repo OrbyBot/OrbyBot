@@ -9,7 +9,6 @@
     "node": "10.6.0"
   },
   "scripts": {
-    "postinstall": "npm run build",
     "heroku-postbuild": "npm run build",
     "build": "babel src/ --out-dir dist/ --ignore **/*-test.js",
     "dev": "concurrently \"npm run build -- --watch\" \"nodemon -r dotenv/config dist/index.js\"",
@@ -22,7 +21,8 @@
     "@babel/polyfill": "^7.0.0",
     "body-parser": "^1.18.3",
     "botbuilder": "^4.0.6",
-    "botbuilder-ai": "4.0.6",
+    "botbuilder-ai": "^4.0.6",
+    "botbuilder-dialogs": "^4.0.6",
     "botbuilder-teams": "^0.2.2",
     "botframework-config": "^4.0.6",
     "express": "^4.16.3",
@@ -49,6 +49,7 @@
     "eslint-plugin-jsx-a11y": "^6.1.1",
     "eslint-plugin-prettier": "^2.6.2",
     "eslint-plugin-react": "^7.11.1",
+    "flow-bin": "^0.80.0",
     "jest": "^23.5.0",
     "nodemon": "^1.18.4",
     "prettier": "^1.14.2"
