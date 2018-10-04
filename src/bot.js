@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 import * as githubIssuesDialog from './dialogs/githubIssuesDialog';
+import * as githubPRDialog from './dialogs/githubPRDialog';
 import * as contentDeployDialog from './dialogs/pccDeployDialog';
 import * as helpDialog from './dialogs/helpDialog';
 import * as hpALMDialog from './dialogs/hpALMDialog';
@@ -65,6 +66,7 @@ export default class OrbyBot {
     this.dialogs.add(choicePrompt);
     this.dialogs.add(new TextPrompt(prompt));
     this.dialogs.add(githubIssuesDialog.dialog(this.luisState));
+    this.dialogs.add(githubPRDialog.dialog(this.luisState));
     this.dialogs.add(contentDeployDialog.dialog(prompt, this.luisState));
     this.dialogs.add(helpDialog.dialog(cardPrompt));
     this.dialogs.add(hpALMDialog.dialog(prompt));
@@ -122,6 +124,9 @@ export default class OrbyBot {
             switch (topIntent.intent) {
               case githubIssuesDialog.INTENT:
                 await dc.beginDialog(githubIssuesDialog.INTENT);
+                break;
+              case githubPRDialog.INTENT:
+                await dc.beginDialog(githubPRDialog.INTENT);
                 break;
               case contentDeployDialog.INTENT: {
                 await dc.beginDialog(contentDeployDialog.INTENT);

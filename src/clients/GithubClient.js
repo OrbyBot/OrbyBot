@@ -13,9 +13,9 @@ async function getRepo(owner = 'OrbyBot', repo = 'OrbyBot') {
   return response.data.full_name;
 }
 
-async function _searchIssues(owner, type = 'issue', other = '') {
+async function _searchIssues(owner, type = 'issues', other = '') {
   const user = owner ? `user:${owner}` : '';
-  const q = `type:${type} ${user} ${other}`;
+  const q = `state:open type:${type} ${user} ${other}`;
   const result = await octokit.search.issues({ q });
 
   const issues = [];
@@ -28,7 +28,7 @@ async function _searchIssues(owner, type = 'issue', other = '') {
 }
 
 async function getAssignedIssues(owner) {
-  return _searchIssues(owner, 'issue');
+  return _searchIssues(owner, 'issues');
 }
 
 async function getAssignedPullRequests(owner) {
