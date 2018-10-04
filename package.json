@@ -32,7 +32,8 @@
     "express": "^4.16.3",
     "request": "^2.88.0",
     "request-promise": "^4.2.2",
-    "restify": "^7.2.1"
+    "restify": "^7.2.1",
+    "servicenow-rest-api": "^1.0.4"
   },
   "resolutions": {
     "babel-core": "7.0.0-bridge.0"
