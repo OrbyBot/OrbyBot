@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 import * as githubIssuesDialog from './dialogs/githubIssuesDialog';
+import * as contentDeployDialog from './dialogs/pccDeployDialog';
 import * as helpDialog from './dialogs/helpDialog';
 
 const { ActivityTypes } = require('botbuilder');
@@ -12,6 +13,7 @@ const { ChoicePrompt, TextPrompt, DialogSet } = require('botbuilder-dialogs');
 
 // State Accessor Properties
 const DIALOG_STATE_PROPERTY = 'dialogState';
+const LUIS_STATE = 'luisState';
 
 async function noMatch(turnContext) {
   await turnContext.sendActivity(`No LUIS intents were found.
@@ -51,6 +53,8 @@ export default class OrbyBot {
     );
 
     this.dialogState = conversationState.createProperty(DIALOG_STATE_PROPERTY);
+    this.luisState = conversationState.createProperty(LUIS_STATE);
+
     const prompt = 'textPrompt';
 
     const cardPrompt = 'cardPrompt';
@@ -59,6 +63,7 @@ export default class OrbyBot {
     this.dialogs.add(choicePrompt);
     this.dialogs.add(new TextPrompt(prompt));
     this.dialogs.add(githubIssuesDialog.dialog(prompt));
+    this.dialogs.add(contentDeployDialog.dialog(prompt, this.luisState));
     this.dialogs.add(helpDialog.dialog(cardPrompt));
 
     this.conversationState = conversationState;
@@ -91,6 +96,13 @@ export default class OrbyBot {
 
         console.log('Continue Dialog: ', dialogResult);
 
+        const entities = [
+          { entity: '9.10', type: 'branch' },
+          { entity: 'asys', type: 'environment' },
+        ];
+
+        this.luisState.set(turnContext, entities);
+
         // If no one has responded,
         if (!dc.context.responded) {
           if (topIntent.score < 0.3) {
@@ -100,6 +112,21 @@ export default class OrbyBot {
               case githubIssuesDialog.INTENT:
                 await dc.beginDialog(githubIssuesDialog.INTENT);
                 break;
+              case contentDeployDialog.INTENT: {
+                // // const conversatoin = this.conversationState;
+                // const conversation = this.conversationState.get(
+                //   turnContext,
+                //   {},
+                // );
+                // conversation.luisEntities = entities;
+                // await this.conversationState.set(turnContext, conversation);
+                // // conversationState
+                // //   contentDeployDialog.DEPLOY_DIALOG_STATE
+                // // ] = entities;
+                // console.log('entities: ', this.luisRecognizer.entities);
+                await dc.beginDialog(contentDeployDialog.INTENT);
+                break;
+              }
               case 'None': {
                 await noMatch(turnContext);
                 break;
