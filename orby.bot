@@ -15,10 +15,19 @@
             "name": "production",
             "endpoint": "https://orby-bot.herokuapp.com/api/messages",
             "appId": "8961d70e-7715-4cbd-baee-9da9b5a4d4c2",
-            "appPassword": "cCv/6viiMnmhQ/ipps9aGg==!GuevQip54/eCGPU7RNG9sBRIdA2xNbGA4JWWKevUv7c=",
+            "appPassword": "SBh/F6c0sY1EKOmntQKXpw==!7FtI4OlzfnbP/2SKGtr3jjcF61foxUk6cQ8Cj9Y0yVw=",
             "id": "199"
+        },
+        {
+            "type": "luis",
+            "id": "235",
+            "name": "luisModel",
+            "version": "0.1",
+            "appId": "694c8b4a-8ac4-4012-be22-60514e3bca5a",
+            "authoringKey": "ZEhY3FOee++BPCqEdp1TgQ==!ri+E2cakB3R7l/DVXezKX08xfGJRZkc1fx2dFPEZSplV4vqYdM4aRW+Gz5hBGVUg",
+            "region": "westus"
         }
     ],
-    "padlock": "T8zDGzseI8l4JwUfpAu/Pw==!1QjAIPOAI776uO1uT4A+1y9xceWvf36g59pCoApXmkx9iBU+x+hh5xd7mdmPaJKR",
+    "padlock": "8JOvN9OT4wtOUzklqBaOiw==!AZFJEdjVS1uM5AS9tit138rOB4wUJL9HgNNb9GPiZibXtQ9z2dX31ga7MREyVwZx",
     "version": "2.0"
 }

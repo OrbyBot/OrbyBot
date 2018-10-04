@@ -3,12 +3,12 @@
 
 // See https://babeljs.io/docs/en/babel-polyfill for detail
 import '@babel/polyfill';
+import OrbyBot from './bot';
 
 const path = require('path');
 const restify = require('restify');
 const { BotFrameworkAdapter } = require('botbuilder');
 const { BotConfiguration } = require('botframework-config');
-const { AdaptiveCardsBot } = require('./bot');
 
 const DEV_ENVIRONMENT = 'development';
 
@@ -48,19 +48,45 @@ try {
 // Get bot endpoint configuration by service name.
 const endpointConfig = botConfig.findServiceByNameOrId(BOT_CONFIGURATION);
 
+// Language Understanding (LUIS) service name as defined in the .bot file.
+const LUIS_CONFIGURATION = 'luisModel';
+
+// Get endpoint and LUIS configurations by service name.
+const luisConfig = botConfig.findServiceByNameOrId(LUIS_CONFIGURATION);
+
+// Map the contents to the required format for `LuisRecognizer`.
+const luisApplication = {
+  applicationId: luisConfig.appId,
+  endpointKey: luisConfig.authoringKey,
+  azureRegion: luisConfig.region,
+};
+
+// Create configuration for LuisRecognizer's runtime behavior.
+const luisPredictionOptions = {
+  includeAllIntents: true,
+  log: true,
+  staging: false,
+};
+
 // Create adapter. See https://aka.ms/about-bot-adapter to learn more about adapters.
 const adapter = new BotFrameworkAdapter({
   appId: endpointConfig.appId || process.env.MicrosoftAppID,
   appPassword: endpointConfig.appPassword || process.env.MicrosoftAppPassword,
 });
 
-// Create the AdaptiveCardsBot.
-const adaptiveCardsBot = new AdaptiveCardsBot();
+// Create the bot.
+let bot;
+try {
+  bot = new OrbyBot(luisApplication, luisPredictionOptions);
+} catch (err) {
+  console.error(`[botInitializationError]: ${err}`);
+  process.exit();
+}
 
 // Listen for incoming requests.
 server.post('/api/messages', (req, res) => {
   adapter.processActivity(req, res, async context => {
-    await adaptiveCardsBot.onTurn(context);
+    await bot.onTurn(context);
   });
 });
 
