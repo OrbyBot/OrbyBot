@@ -92,16 +92,14 @@ export default class OrbyBot {
         // Since the LuisRecognizer was configured to include the raw results, get the `topScoringIntent` as specified by LUIS.
         const topIntent = results.luisResult.topScoringIntent;
 
+        console.log(results.luisResult.entities);
+
         const dialogResult = await dc.continueDialog();
 
         console.log('Continue Dialog: ', dialogResult);
+        console.log(results.luisResult);
 
-        const entities = [
-          { entity: '9.10', type: 'branch' },
-          { entity: 'asys', type: 'environment' },
-        ];
-
-        this.luisState.set(turnContext, entities);
+        this.luisState.set(turnContext, results.luisResult.entities);
 
         // If no one has responded,
         if (!dc.context.responded) {
@@ -113,17 +111,6 @@ export default class OrbyBot {
                 await dc.beginDialog(githubIssuesDialog.INTENT);
                 break;
               case contentDeployDialog.INTENT: {
-                // // const conversatoin = this.conversationState;
-                // const conversation = this.conversationState.get(
-                //   turnContext,
-                //   {},
-                // );
-                // conversation.luisEntities = entities;
-                // await this.conversationState.set(turnContext, conversation);
-                // // conversationState
-                // //   contentDeployDialog.DEPLOY_DIALOG_STATE
-                // // ] = entities;
-                // console.log('entities: ', this.luisRecognizer.entities);
                 await dc.beginDialog(contentDeployDialog.INTENT);
                 break;
               }
