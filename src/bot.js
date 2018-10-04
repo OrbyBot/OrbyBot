@@ -64,7 +64,7 @@ export default class OrbyBot {
     this.dialogs = new DialogSet(this.dialogState);
     this.dialogs.add(choicePrompt);
     this.dialogs.add(new TextPrompt(prompt));
-    this.dialogs.add(githubIssuesDialog.dialog(this.luisState));
+    this.dialogs.add(githubIssuesDialog.dialog(prompt));
     this.dialogs.add(contentDeployDialog.dialog(prompt, this.luisState));
     this.dialogs.add(helpDialog.dialog(cardPrompt));
     this.dialogs.add(hpALMDialog.dialog(prompt));
