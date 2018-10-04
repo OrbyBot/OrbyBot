@@ -54,13 +54,21 @@ export function dialog(prompt, luisState) {
     const environment = step.values[ENTITY_ENVIRONMENT];
     const branch = step.values[ENTITY_BRANCH];
 
-    const number = await createNewTask(branch, environment);
+    if (
+      environment.toLowerCase() === 'production' ||
+      environment.toLowerCase() === 'prod'
+    ) {
+      const number = await createNewTask(branch, environment);
 
-    step.context.sendActivity(
-      `Ok, I've opened up a ticket ${number} to deploy the ${branch} branch to ${environment}`,
-    );
-    // console.log(res)
-    // ;
+      step.context.sendActivity(
+        `Ok, I've opened up a ticket ${number} to deploy the ${branch} branch to ${environment}`,
+      );
+    } else {
+      step.context.sendActivity(
+        `Ok, I went ahead and deployed the ${branch} branch to ${environment}`,
+      );
+    }
+
     return step.endDialog();
   }
 
