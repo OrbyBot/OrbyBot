@@ -8,12 +8,7 @@ const { ActivityTypes } = require('botbuilder');
 
 const { LuisRecognizer } = require('botbuilder-ai');
 
-const {
-  ChoicePrompt,
-  TextPrompt,
-  DialogSet,
-  ListStyle,
-} = require('botbuilder-dialogs');
+const { ChoicePrompt, TextPrompt, DialogSet } = require('botbuilder-dialogs');
 
 // State Accessor Properties
 const DIALOG_STATE_PROPERTY = 'dialogState';
